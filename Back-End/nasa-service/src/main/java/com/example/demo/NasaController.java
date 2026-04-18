@@ -11,7 +11,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/nasa")
-@CrossOrigin(origins = "*") 
+@CrossOrigin(origins = "*")
+public class NasaController { 
 public Map<String, String> getNasaImage() {
     String apiKey = System.getenv("NASA_KEY");
     if (apiKey == null || apiKey.isEmpty()) {
@@ -45,4 +46,5 @@ public Map<String, String> getNasaImage() {
     }
 
     return frontendResult;
+}
 }

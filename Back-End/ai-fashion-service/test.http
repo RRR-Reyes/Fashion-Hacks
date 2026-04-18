@@ -1,0 +1,20 @@
+### Test Analyze
+POST http://localhost:8082/analyze
+Content-Type: application/json
+
+{
+  "imageUrl": "https://apod.nasa.gov/apod/image/2401/GalaxyCluster_Webb.jpg"
+}
+
+### Test Fashion
+POST http://localhost:8082/fashion
+Content-Type: application/json
+
+{
+  "colors": ["#1a1a2e", "#ff6b35", "#f7c59f"],
+  "textures": ["matte", "iridescent"],
+  "vibe": "cosmic warm desert dusk"
+}
+
+###  "colors": ["#1a1a2e", "#ff6b35", "#f7c59f"],
+###   "vibe": "cosmic warm desert dusk"
