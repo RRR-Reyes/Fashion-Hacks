@@ -36,3 +36,111 @@
     transform: rotate(360deg);
   }
 }
+.App {
+  background: #cedcf4;
+  min-height: 100vh;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.content-wrapper {
+  display: flex;
+  gap: 40px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.left-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 120px;
+}
+
+.right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .content-wrapper {
+    flex-direction: column;
+  }
+}
+
+/* Nasa image*/
+.nasa-img {
+  width: 100%;
+  max-width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.nasa-section h2,
+.nasa-section p {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.palette-row {
+  display: flex;
+  justify-self: center;
+  gap: 10px;
+}
+
+.color-swatch {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  font-size: 10px;
+  color: #fff;
+  padding-bottom: 4px;
+}
+
+.texture-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.texture-tag {
+  background: #dce6ff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.gallery-box {
+  text-align: center;
+  margin-left: 40px;
+}
+
+.gallery-grid {
+  display: grid;
+  justify-content: center;
+  margin-left: 60px;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 15px;
+}
+
+.gallery-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: 0.2s;
+}
+
+.gallery-img:hover {
+  transform: scale(1.05);
+}
