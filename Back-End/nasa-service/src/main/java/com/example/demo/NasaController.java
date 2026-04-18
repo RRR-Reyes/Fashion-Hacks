@@ -12,30 +12,37 @@ import java.util.Map;
 @RestController
 @RequestMapping("/nasa")
 @CrossOrigin(origins = "*") 
-public class NasaController {
+public Map<String, String> getNasaImage() {
+    String apiKey = System.getenv("NASA_KEY");
+    if (apiKey == null || apiKey.isEmpty()) {
+        apiKey = "DEMO_KEY"; 
+    }
+    
+    String url = "https://api.nasa.gov/planetary/apod?api_key=" + apiKey;
 
-    @SuppressWarnings("unchecked")
-    @GetMapping("/image")
-    public Map<String, String> getNasaImage() {
-        
-        String apiKey = System.getenv("NASA_KEY");
-        if (apiKey == null || apiKey.isEmpty()) {
-            apiKey = "DEMO_KEY"; 
-        }
-        
-        String url = "https://api.nasa.gov/planetary/apod?api_key=" + apiKey;
+    RestTemplate restTemplate = new RestTemplate();
+    Map<String, Object> nasaResponse = restTemplate.getForObject(url, Map.class);
 
-        RestTemplate restTemplate = new RestTemplate();
-        Map<String, Object> nasaResponse = restTemplate.getForObject(url, Map.class);
+    Map<String, String> frontendResult = new HashMap<>();
+    
+    if (nasaResponse != null) {
+        // --- EDGE CASE HARDENING START ---
+        String mediaType = (String) nasaResponse.get("media_type");
+        String finalImageUrl = (String) nasaResponse.get("url");
 
-        Map<String, String> frontendResult = new HashMap<>();
-        
-        if (nasaResponse != null) {
+        // If NASA returns a video, use a high-res backup image of the Pillars of Creation
+        if ("video".equalsIgnoreCase(mediaType)) {
+            finalImageUrl = "https://images-assets.nasa.gov/image/PIA23645/PIA23645~large.jpg";
+            frontendResult.put("title", "Pillars of Creation (Fallback)");
+            frontendResult.put("description", "NASA posted a video today, so we've provided this iconic fallback image of the Pillars of Creation for your outfit inspiration.");
+        } else {
             frontendResult.put("title", (String) nasaResponse.get("title"));
-            frontendResult.put("imageUrl", (String) nasaResponse.get("url"));
             frontendResult.put("description", (String) nasaResponse.get("explanation"));
         }
+        // --- EDGE CASE HARDENING END ---
 
-        return frontendResult;
+        frontendResult.put("imageUrl", finalImageUrl);
     }
+
+    return frontendResult;
 }
