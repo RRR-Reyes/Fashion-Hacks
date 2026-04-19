@@ -2,76 +2,136 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
-  // --- 1. STATE VARIABLES ---
-  // These hold the data so React can display it on the screen
+  // --- STATE MANAGEMENT ---
   const [nasaData, setNasaData] = useState(null);
   const [fashionData, setFashionData] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // --- 2. THE FETCH FUNCTIONS ---
-  
-  // Gets the daily space data from Port 8080
+  const [selectedDate, setSelectedDate] = useState('');
+  const [bonusData, setBonusData] = useState(null);
+  const [bonusLoading, setBonusLoading] = useState(false);
+  const [bonusFashionData, setBonusFashionData] = useState(null);
+  const [bonusFashionLoading, setBonusFashionLoading] = useState(false);
+
+  // --- API FUNCTIONS ---
+
   const fetchNasaData = async () => {
     try {
       const response = await fetch('http://localhost:8080/nasa/image');
       const data = await response.json();
-      setNasaData(data); // Saves the title, description, and imageURL
-    } catch (err) {
-      console.error("NASA Service Error:", err);
-    }
+      setNasaData(data);
+    } catch (err) { console.error("NASA Load Error:", err); }
   };
 
-  // Sends the NASA description to Port 8082 to get a fashion vibe
   const handleStitch = async () => {
     if (!nasaData) return;
-    
-    setLoading(true); // Start a loading spinner
+    setLoading(true);
     try {
       const response = await fetch('http://localhost:8082/fashion/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ description: nasaData.description }),
+        body: JSON.stringify({ description: nasaData.description || nasaData.explanation }),
       });
       const result = await response.json();
-      setFashionData(result); // Saves the AI description and Unsplash image
-    } catch (err) {
-      console.error("AI Service Error:", err);
-    } finally {
-      setLoading(false); // Stop the spinner
-    }
+      setFashionData(result);
+    } catch (err) { console.error("AI Error:", err); } finally { setLoading(false); }
   };
 
-  // --- 3. THE LIFECYCLE (useEffect) ---
-  // This runs fetchNasaData once as soon as the user opens the site
-  useEffect(() => {
-    fetchNasaData();
-  }, []);
+  const fetchBonusImage = async () => {
+    if (!selectedDate) return alert("Select a date!");
+    setBonusLoading(true);
+    try {
+      const response = await fetch(`http://localhost:8080/nasa/history?date=${selectedDate}`);
+      const data = await response.json();
+      setBonusData(data);
+    } catch (err) { console.error("History Error:", err); } finally { setBonusLoading(false); }
+  };
 
+  const handleBonusStitch = async () => {
+    if (!bonusData) return;
+    setBonusFashionLoading(true);
+    try {
+      const response = await fetch('http://localhost:8082/fashion/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ description: bonusData.explanation || bonusData.description }),
+      });
+      const result = await response.json();
+      setBonusFashionData(result);
+    } catch (err) { console.error("Bonus AI Error:", err); } finally { setBonusFashionLoading(false); }
+  };
+
+  useEffect(() => { fetchNasaData(); }, []);
+
+  // --- UI RENDER ---
   return (
     <div className="app-container">
-      <h1>Cosmic Couture</h1>
+      <h1>FASHION HACKS</h1>
 
-      {/* --- 4. NASA DISPLAY --- */}
-      {nasaData && (
-        <div className="section">
-          <h2>NASA Inspiration: {nasaData.title}</h2>
-          <img src={nasaData.imageUrl} alt="NASA" style={{ width: '400px' }} />
-          <p>{nasaData.description}</p>
-          
-          <button onClick={handleStitch} disabled={loading}>
-            {loading ? "Stitching..." : "Generate My Look"}
+      <div className="action-bar main-controls">
+        <button onClick={handleStitch} disabled={loading} className="primary-btn">
+          {loading ? "Stitching..." : "Generate Today's Look"}
+        </button>
+
+        <div className="inheritance-connector">
+          {/* Text removed for a cleaner look */}
+          <div className="horizontal-arrow"></div>
+        </div>
+
+        <div className="action-group">
+          <input type="date" onChange={(e) => setSelectedDate(e.target.value)} className="date-input" />
+          <button onClick={fetchBonusImage} disabled={bonusLoading} className="secondary-btn">
+            {bonusLoading ? "Scanning..." : "Explore History"}
           </button>
         </div>
-      )}
+      </div>
 
-      {/* --- 5. FASHION DISPLAY --- */}
-      {fashionData && (
-        <div className="section fashion-result">
-          <h2>Your Cosmic Vibe</h2>
-          <img src={fashionData.fashionImage} alt="Fashion" style={{ width: '400px' }} />
-          <p>{fashionData.vibeDescription}</p>
+      <div className="dashboard-grid">
+        {/* TODAY COLUMN */}
+        <div className="flow-column">
+          {nasaData && (
+            <>
+              <div className="section card">
+                <span className="badge">TODAY</span>
+                <h2>{nasaData.title}</h2>
+                <img src={nasaData.imageUrl || nasaData.url} alt="NASA" />
+              </div>
+              <div className="vertical-arrow">↓</div>
+              {fashionData && (
+                <div className="section card fashion-card fade-in">
+                  <h2>Generated Look</h2>
+                  <img src={fashionData.fashionImage} alt="Fashion" />
+                  <p>{fashionData.vibeDescription}</p>
+                </div>
+              )}
+            </>
+          )}
         </div>
-      )}
+
+        {/* HISTORY COLUMN */}
+        <div className="flow-column">
+          {bonusData && (
+            <>
+              <div className="section card bonus-card">
+                <span className="badge">HISTORY</span>
+                <h2>{bonusData.title}</h2>
+                <img src={bonusData.url || bonusData.imageUrl} alt="Bonus" />
+                <button onClick={handleBonusStitch} disabled={bonusFashionLoading} className="mini-stitch-btn">
+                  {bonusFashionLoading ? "Stitching..." : "Generate History Look"}
+                </button>
+              </div>
+              <div className="vertical-arrow">↓</div>
+              {bonusFashionData && (
+                <div className="section card fashion-card fade-in">
+                  <h2>Historical Vibe</h2>
+                  <img src={bonusFashionData.fashionImage} alt="Fashion" />
+                  <p>{bonusFashionData.vibeDescription}</p>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
