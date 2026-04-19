@@ -21,3 +21,33 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+# --- SENSITIVE DATA (THE MOST IMPORTANT PART) ---
+.env
+*.key
+*.pem
+credentials.json
+
+# --- JAVA / MAVEN ---
+target/
+*.class
+*.jar
+*.war
+*.ear
+.mvn/wrapper/maven-wrapper.jar
+
+# --- NODE / REACT ---
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# --- IDE / SYSTEM ---
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
