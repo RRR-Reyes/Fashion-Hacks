@@ -1,26 +1,49 @@
-body, html { margin: 0; padding: 0; background-color: #0a0a0a; }
+/* --- 1. GLOBAL RESET & BASE --- */
+body, html { 
+  margin: 0; 
+  padding: 0; 
+  background-color: #0a0a0a; 
+}
 
 .app-container {
   min-height: 100vh;
+  /* Deep Space Gradient */
   background: radial-gradient(circle at top right, #1a1a2e, #16213e, #0f3460);
   color: #fff;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   padding: 40px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+/* --- 2. TYPOGRAPHY --- */
 h1 {
   font-size: 3.5rem;
-  letter-spacing: 8px; /* Increased for that hackathon-tech look */
+  letter-spacing: 8px;
   text-transform: uppercase;
   background: linear-gradient(to right, #00d2ff, #9cedff, #fff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 40px;
+  filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.3));
 }
 
+h2 {
+  color: #00d2ff;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  margin-top: 0;
+}
+
+p {
+  line-height: 1.6;
+  color: #d1d1e0;
+  font-size: 0.95rem;
+}
+
+/* --- 3. ACTION CENTER (The Control Bar) --- */
 .action-bar {
   display: flex;
   align-items: center;
@@ -29,56 +52,173 @@ h1 {
   padding: 20px 40px;
   border-radius: 50px;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  margin-bottom: 20px;
 }
 
+.inheritance-connector { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+
+.horizontal-arrow { 
+  width: 60px; 
+  height: 2px; 
+  background: #00d2ff; 
+  position: relative; 
+}
+
+.horizontal-arrow::after { 
+  content: '▶'; 
+  position: absolute; 
+  right: -5px; 
+  top: -8px; 
+  color: #00d2ff; 
+  font-size: 12px; 
+}
+
+/* --- 4. THE DASHBOARD GRID --- */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr; /* Two equal columns for side-by-side display */
   gap: 50px;
   width: 100%;
   max-width: 1200px;
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
-.flow-column { display: flex; flex-direction: column; align-items: center; }
+.flow-column { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+}
 
+/* --- 5. GLASSMORPHISM CARDS --- */
 .section {
   background: rgba(255, 255, 255, 0.07);
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 24px;
   padding: 30px;
   text-align: center;
   width: 100%;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
   position: relative;
+  transition: transform 0.3s ease;
 }
 
-.section img { width: 100%; border-radius: 12px; margin: 15px 0; }
+.section:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0, 210, 255, 0.4);
+}
 
-.vertical-arrow { font-size: 2.5rem; color: #00d2ff; margin: 15px 0; animation: bounce 2s infinite; }
+/* --- THE CRITICAL MEDIA ITEM FIX --- */
+.media-item {
+  width: 100%;
+  border-radius: 12px;
+  margin: 15px 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  display: block;
+  object-fit: cover; /* Ensures images fill the space neatly */
+}
 
-/* Horizontal Arrow Stylings */
-.inheritance-connector { display: flex; align-items: center; justify-content: center; }
-.horizontal-arrow { width: 60px; height: 2px; background: #00d2ff; position: relative; }
-.horizontal-arrow::after { content: '▶'; position: absolute; right: -5px; top: -8px; color: #00d2ff; font-size: 12px; }
+/* --- 6. ARROWS & BADGES --- */
+.vertical-arrow { 
+  font-size: 2.5rem; 
+  color: #00d2ff; 
+  margin: 15px 0; 
+  animation: bounce 2s infinite; 
+  text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+}
 
 .badge {
-  position: absolute; top: -12px; left: 20px;
-  background: #00d2ff; color: #1a1a2e;
-  padding: 4px 12px; border-radius: 20px; font-weight: 900; font-size: 0.7rem;
+  position: absolute; 
+  top: -12px; 
+  left: 20px;
+  background: #00d2ff; 
+  color: #1a1a2e;
+  padding: 4px 12px; 
+  border-radius: 20px; 
+  font-weight: 900; 
+  font-size: 0.7rem;
+  letter-spacing: 1px;
 }
 
+/* --- 7. INTERACTIVE ELEMENTS (Buttons & Inputs) --- */
 button {
   background: linear-gradient(45deg, #00d2ff, #3a7bd5);
-  color: #fff; border: none; padding: 12px 24px; border-radius: 30px;
-  cursor: pointer; font-weight: 800; text-transform: uppercase;
+  color: #fff; 
+  border: none; 
+  padding: 12px 28px; 
+  border-radius: 30px;
+  cursor: pointer; 
+  font-weight: 800; 
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.2);
 }
 
-.secondary-btn { background: transparent; border: 1px solid #00d2ff; color: #00d2ff; }
-.mini-stitch-btn { font-size: 0.7rem; margin-top: 10px; width: 100%; }
+button:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+}
 
-@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
-.fade-in { animation: fadeIn 0.8s ease-in; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+button:disabled {
+  background: #2a2a2a;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.secondary-btn { 
+  background: transparent; 
+  border: 1px solid #00d2ff; 
+  color: #00d2ff; 
+}
+
+.mini-stitch-btn { 
+  font-size: 0.75rem; 
+  margin-top: 15px; 
+  width: 100%; 
+}
+
+.date-input {
+  background: rgba(0, 0, 0, 0.2);
+  color: white;
+  border: 1px solid rgba(0, 210, 255, 0.3);
+  padding: 10px;
+  border-radius: 12px;
+  outline: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+/* --- 8. ANIMATIONS --- */
+@keyframes bounce { 
+  0%, 100% { transform: translateY(0); } 
+  50% { transform: translateY(10px); } 
+}
+
+.fade-in { 
+  animation: fadeIn 0.8s ease-in; 
+}
+
+@keyframes fadeIn { 
+  from { opacity: 0; transform: translateY(10px); } 
+  to { opacity: 1; transform: translateY(0); } 
+}
+
+/* --- 9. MOBILE OPTIMIZATION --- */
+@media (max-width: 900px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .action-bar { flex-direction: column; border-radius: 20px; }
+  .horizontal-arrow { display: none; }
+  h1 { font-size: 2.2rem; }
+}
