@@ -4,7 +4,7 @@ C:\Users\Owner\OneDrive\Desktop\2026Hackathon\Fashion-Hacks\Back-End\ai-fashion-
 C:\Users\Owner\OneDrive\Desktop\2026Hackathon\Fashion-Hacks\Back-End\ai-fashion-service\src\main\java\com\satellite\fashion\service\UnsplashService.java
 C:\Users\Owner\OneDrive\Desktop\2026Hackathon\Fashion-Hacks\Back-End\ai-fashion-service\src\main\java\com\satellite\fashion\AiFashionServiceApplication.java
 C:\Users\Owner\OneDrive\Desktop\2026Hackathon\Fashion-Hacks\Back-End\ai-fashion-service\src\main\java\com\satellite\fashion\config\AppConfig.java
-C:\Users\Owner\OneDrive\Desktop\2026Hackathon\Fashion-Hacks\Back-End\ai-fashion-service\src\main\java\com\satellite\fashion\controller\FashionController.java
+C:\Users\Owner\OneDrive\Desktop\2026Hackathon\Fashion-Hacks\Back-End\ai-fashion-service\src\main\java\com\satellite\fashion\FashionController.java
 C:\Users\Owner\OneDrive\Desktop\2026Hackathon\Fashion-Hacks\Back-End\ai-fashion-service\src\main\java\com\satellite\fashion\service\OpenAIService.java
 C:\Users\Owner\OneDrive\Desktop\2026Hackathon\Fashion-Hacks\Back-End\ai-fashion-service\src\main\java\com\satellite\fashion\dto\OutfitImage.java
 C:\Users\Owner\OneDrive\Desktop\2026Hackathon\Fashion-Hacks\Back-End\ai-fashion-service\src\main\java\com\satellite\fashion\exception\ExternalApiException.java

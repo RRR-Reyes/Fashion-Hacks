@@ -1,0 +1,15 @@
+com\satellite\fashion\config\AppConfig.class
+com\satellite\fashion\service\UnsplashService.class
+com\satellite\fashion\dto\FashionResponse$FashionResponseBuilder.class
+com\satellite\fashion\dto\AnalyzeRequest.class
+com\satellite\fashion\dto\OutfitImage.class
+com\satellite\fashion\exception\GlobalExceptionHandler.class
+com\satellite\fashion\AiFashionServiceApplication.class
+com\satellite\fashion\dto\AnalyzeResponse.class
+com\satellite\fashion\dto\FashionResponse.class
+com\satellite\fashion\FashionController.class
+com\satellite\fashion\controller\AnalyzeController.class
+com\satellite\fashion\dto\OutfitImage$OutfitImageBuilder.class
+com\satellite\fashion\exception\ExternalApiException.class
+com\satellite\fashion\service\OpenAIService.class
+com\satellite\fashion\dto\AnalyzeResponse$AnalyzeResponseBuilder.class
