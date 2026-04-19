@@ -1,12 +1,15 @@
 export default function VibeDescription({ vibe }) {
-  
-    if (!vibe) {
-        return <p>Loading...</p>;
-    }
-    return (
+
+  if (!vibe) {
+  return (
     <div className="vibe-box">
-      <h3>Vibe</h3>
-      <p>{vibe}</p>
+      <p className="eyebrow">Cosmic Vibe</p>
+      <div className="vibe-block">
+        <p style={{ color: 'var(--text-dim)', fontStyle: 'italic' }}>
+          Click generate to analyze today's NASA image...
+        </p>
+      </div>
     </div>
   );
+}
 }

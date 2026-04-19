@@ -5,8 +5,15 @@ export default function ColorPalette({ colors }) {
   const [copied, setCopied] = useState(null);
 
   if (!colors) {
-    return <p style={{ color: 'var(--text-muted)', fontSize: '12px' }}>Loading...</p>;
-  }
+  return (
+    <div className="palette-box">
+      <p className="eyebrow">Extracted Color Palette</p>
+      <div style={{ height: '44px', background: 'var(--panel)', border: '0.5px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <span style={{ fontSize: '9px', letterSpacing: '0.2em', color: 'var(--text-dim)', textTransform: 'uppercase' }}>Awaiting analysis</span>
+      </div>
+    </div>
+  );
+}
 
   function handleCopy(hex) {
     navigator.clipboard?.writeText(hex);
