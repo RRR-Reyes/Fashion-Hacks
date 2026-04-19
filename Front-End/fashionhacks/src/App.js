@@ -1,4 +1,4 @@
-// This app expects: NASAImage, Analysis, fashionResults (from orchestrator later)
+import { useState, useEffect } from "react";
 import NasaImage from "./components/NasaImage";
 import VibeDescription from "./components/VibeDescription";
 import ColorPalette from "./components/ColorPalette";
@@ -8,38 +8,107 @@ import './App.css';
 
 function App() {
 
-  const nasaImage = {
-imageUrl: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa",  title: "Fashion Cluster",
-  description: "As NASA devolpes, we design. Putting into different fastion sytles as you please."
-};
+  const [utc, setUtc] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [step, setStep] = useState(0);
+  // 0 = idle, 1 = nasa fetched, 2 = ai analyzing, 3 = outfits matched
 
-  const analysis = {
-    colors: ["#3375FF", "#FF8166", "#FF33DB"],
-    textures: ["Denium ", "Silky"],
-    vibe: "Confident, streetwear inspired by cosmic energy."
-  };
+  const [nasaImage, setNasaImage] = useState({
+  imageUrl: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=800",
+  title: "Hubble's Cosmic Reef",
+  description: "A pair of nebulas 163,000 light-years away in the Large Magellanic Cloud."
+});  
+  const [analysis, setAnalysis]           = useState(null);
+  const [fashionResults, setFashionResults] = useState(null);
 
-  const fashionResults = [
-   { imageUrl: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80" },
-  { imageUrl: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f" },
-  { imageUrl: "https://images.unsplash.com/photo-1605289355680-75fb41239154" },
-  ];
+  // UTC clock
+  useEffect(() => {
+    const pad = n => String(n).padStart(2, '0');
+    const tick = () => {
+      const t = new Date();
+      setUtc(`UTC ${pad(t.getUTCHours())}:${pad(t.getUTCMinutes())}:${pad(t.getUTCSeconds())}`);
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  // ── THIS IS WHERE DEV #2 PLUGS IN ─────────────────────────
+  // Right now it uses placeholder data so your UI works.
+  // When orchestrator is ready, Dev #2 replaces the contents
+  // of this function with real fetch() calls — nothing else changes.
+  async function handleGenerate() {
+    setIsLoading(true);
+    setStep(0);
+    setAnalysis(null);
+    setFashionResults(null);
+
+    // STEP 1 — NASA image
+    setStep(1);
+    const nasa = {
+      imageUrl: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=800",
+      title: "Hubble's Cosmic Reef",
+      description: "A pair of nebulas 163,000 light-years away in the Large Magellanic Cloud."
+    };
+    setNasaImage(nasa);
+
+    // STEP 2 — AI analysis
+    await new Promise(r => setTimeout(r, 1400));
+    setStep(2);
+    const aiAnalysis = {
+      colors:   ["#3375FF", "#FF8166", "#E033FF", "#0CEFCC"],
+      textures: ["Iridescent", "Silk", "Mesh", "Metallic weave"],
+      vibe:     "Ethereal and boundless — fluid silhouettes, iridescent fabrics, and a palette pulled from the edge of a nebula."
+    };
+    setAnalysis(aiAnalysis);
+
+    // STEP 3 — Fashion results
+    await new Promise(r => setTimeout(r, 1400));
+    setStep(3);
+    setFashionResults([
+      { imageUrl: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=400" },
+      { imageUrl: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400" },
+      { imageUrl: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400" },
+    ]);
+
+    setIsLoading(false);
+  }
+
   return (
     <div className="App">
-       <div className="content-wrapper">
+      <div className="content-wrapper">
 
-        {/* LEFT SIDE — NASA IMAGE */}
-        <div className="left-panel">
-          {/* TODO: Replace nasaImage with props.nasaImage when orchestrator connects*/}
-          <NasaImage data={nasaImage} />
+        <nav className="site-nav">
+          <div>
+            <div className="brand-name">Satellite Street Style</div>
+            <div className="brand-sub">NASA × Unsplash × AI Fashion Intelligence</div>
+          </div>
+          <div className="nav-tag">Today's Look</div>
+        </nav>
+
+        <div className="main-grid">
+
+          <div className="left-panel">
+            <NasaImage
+              data={nasaImage}
+              isLoading={isLoading}
+              onGenerate={handleGenerate}
+              step={step}
+            />
+          </div>
+
+          <div className="right-panel">
+            <VibeDescription vibe={analysis?.vibe} />
+            <ColorPalette    colors={analysis?.colors} />
+            <TextureTags     textures={analysis?.textures} />
+            <FashionGallery  items={fashionResults} />
+          </div>
+
         </div>
 
-        {/* RIGHT SIDE — ANALYSIS + FASHION */}
-        <div className="right-panel">
-          <VibeDescription vibe={analysis.vibe} />
-          <ColorPalette colors={analysis.colors} />
-          <TextureTags textures={analysis.textures} />
-          <FashionGallery items={fashionResults} />
+        <div className="bottom-bar">
+          <span className="telemetry">ISS Coord — 28.5°N 80.6°W — Alt 408km</span>
+          <span className="telemetry">{utc}</span>
         </div>
 
       </div>
