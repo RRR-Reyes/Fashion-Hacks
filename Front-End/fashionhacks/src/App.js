@@ -57,7 +57,7 @@ const [fashionResults, setFashionResults] = useState(null);
 
     // STEP 2 — send image to Backend Dev #2 for AI analysis
     setStep(2);
-    const analysisRes = await fetch("http://localhost:8081/analyze", {
+    const analysisRes = await fetch("http://localhost:8082/analyze", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ imageUrl: nasaData.imageUrl })
@@ -71,7 +71,7 @@ const [fashionResults, setFashionResults] = useState(null);
 
     // STEP 3 — fetch outfit matches from Backend Dev #2
     setStep(3);
-    const fashionRes = await fetch("http://localhost:8081/fashion", {
+    const fashionRes = await fetch("http://localhost:8082/fashion", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(analysisData)
