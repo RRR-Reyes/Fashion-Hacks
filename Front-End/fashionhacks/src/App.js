@@ -18,8 +18,9 @@ function App() {
   title: "Hubble's Cosmic Reef",
   description: "A pair of nebulas 163,000 light-years away in the Large Magellanic Cloud."
 });  
-  const [analysis, setAnalysis]           = useState(null);
-  const [fashionResults, setFashionResults] = useState(null);
+  const [analysis, setAnalysis] = useState(null);
+
+const [fashionResults, setFashionResults] = useState(null);
 
   // UTC clock
   useEffect(() => {
@@ -38,41 +39,53 @@ function App() {
   // When orchestrator is ready, Dev #2 replaces the contents
   // of this function with real fetch() calls — nothing else changes.
   async function handleGenerate() {
-    setIsLoading(true);
-    setStep(0);
-    setAnalysis(null);
-    setFashionResults(null);
+  setIsLoading(true);
+  setStep(0);
+  setAnalysis(null);
+  setFashionResults(null);
 
-    // STEP 1 — NASA image
+  try {
+    // STEP 1 — fetch real NASA image from Backend Dev #1
     setStep(1);
-    const nasa = {
-      imageUrl: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=800",
-      title: "Hubble's Cosmic Reef",
-      description: "A pair of nebulas 163,000 light-years away in the Large Magellanic Cloud."
-    };
-    setNasaImage(nasa);
+    const nasaRes = await fetch("http://localhost:8080/nasa/image");
+    const nasaData = await nasaRes.json();
+    setNasaImage({
+      imageUrl:    nasaData.imageUrl,
+      title:       nasaData.title,
+      description: nasaData.description
+    });
 
-    // STEP 2 — AI analysis
-    await new Promise(r => setTimeout(r, 1400));
+    // STEP 2 — send image to Backend Dev #2 for AI analysis
     setStep(2);
-    const aiAnalysis = {
-      colors:   ["#3375FF", "#FF8166", "#E033FF", "#0CEFCC"],
-      textures: ["Iridescent", "Silk", "Mesh", "Metallic weave"],
-      vibe:     "Ethereal and boundless — fluid silhouettes, iridescent fabrics, and a palette pulled from the edge of a nebula."
-    };
-    setAnalysis(aiAnalysis);
+    const analysisRes = await fetch("http://localhost:8081/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ imageUrl: nasaData.imageUrl })
+    });
+    const analysisData = await analysisRes.json();
+    setAnalysis({
+      colors:   analysisData.colors,
+      textures: analysisData.textures,
+      vibe:     analysisData.vibe
+    });
 
-    // STEP 3 — Fashion results
-    await new Promise(r => setTimeout(r, 1400));
+    // STEP 3 — fetch outfit matches from Backend Dev #2
     setStep(3);
-    setFashionResults([
-      { imageUrl: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=400" },
-      { imageUrl: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400" },
-      { imageUrl: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400" },
-    ]);
+    const fashionRes = await fetch("http://localhost:8081/fashion", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(analysisData)
+    });
+    const fashionData = await fashionRes.json();
+    setFashionResults(fashionData.outfits);
 
-    setIsLoading(false);
+  } catch (err) {
+    console.error("Pipeline failed:", err);
+    // keeps showing whatever data loaded successfully so far
   }
+
+  setIsLoading(false);
+}
 
   return (
     <div className="App">

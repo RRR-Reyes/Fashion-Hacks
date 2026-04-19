@@ -3,8 +3,19 @@ const LOOK_LABELS = ['Nebula', 'Orbit', 'Stellar', 'Void', 'Aurora'];
 export default function FashionGallery({ items }) {
 
   if (!items) {
-    return <p style={{ color: 'var(--text-muted)', fontSize: '12px' }}>Loading...</p>;
-  }
+  return (
+    <div className="gallery-box">
+      <p className="eyebrow">Outfit Curation</p>
+      <div className="gallery-grid">
+        {[1, 2, 3].map(i => (
+          <div key={i} className="gallery-item" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontSize: '9px', letterSpacing: '0.2em', color: 'var(--text-dim)', textTransform: 'uppercase' }}>Look {String(i).padStart(2,'0')}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
   return (
     <div className="gallery-box">
